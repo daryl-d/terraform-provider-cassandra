@@ -113,20 +113,12 @@ func hash(s string) string {
 func resourceKeyspaceExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
 	name := d.Get("name").(string)
 
-	cluster := meta.(*gocql.ClusterConfig)
+	session := meta.(*gocql.Session)
 
-	session, sessionCreationError := cluster.CreateSession()
+	_, err := session.KeyspaceMetadata(name)
 
-	if sessionCreationError != nil {
-		return false, sessionCreationError
-	}
-
-	defer session.Close()
-
-	_, keyspaceDoesNotExist := session.KeyspaceMetadata(name)
-
-	if keyspaceDoesNotExist == nil {
-		return false, keyspaceDoesNotExist
+	if err != nil {
+		return false, err
 	}
 
 	return true, nil
@@ -165,15 +157,7 @@ func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	cluster := meta.(*gocql.ClusterConfig)
-
-	session, sessionCreationError := cluster.CreateSession()
-
-	if sessionCreationError != nil {
-		return sessionCreationError
-	}
-
-	defer session.Close()
+	session := meta.(*gocql.Session)
 
 	d.SetId(name)
 
@@ -183,15 +167,7 @@ func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 
-	cluster := meta.(*gocql.ClusterConfig)
-
-	session, sessionCreationError := cluster.CreateSession()
-
-	if sessionCreationError != nil {
-		return sessionCreationError
-	}
-
-	defer session.Close()
+	session := meta.(*gocql.Session)
 
 	keyspaceMetadata, err := session.KeyspaceMetadata(name)
 
@@ -235,15 +211,7 @@ func resourceKeyspaceUpdate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	cluster := meta.(*gocql.ClusterConfig)
-
-	session, sessionCreationError := cluster.CreateSession()
-
-	if sessionCreationError != nil {
-		return sessionCreationError
-	}
-
-	defer session.Close()
+	session := meta.(*gocql.Session)
 
 	return session.Query(query).Exec()
 }

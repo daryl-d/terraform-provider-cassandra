@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 	"time"
 	"log"
+	"sync"
 )
 
 var (
@@ -119,7 +120,18 @@ func Provider() *schema.Provider {
 	}
 }
 
+var session *gocql.Session = nil
+var mutex = &sync.Mutex{}
+
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
+
+	log.Printf("Creating provider")
+
+	mutex.Lock()
+
+	if session != nil {
+		return session, nil
+	}
 
 	useSSL := d.Get("use_ssl").(bool)
 	username := d.Get("username").(string)
@@ -158,6 +170,8 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	cluster.ConnectTimeout = time.Millisecond * time.Duration(connectionTimeout)
 
+	cluster.Timeout = time.Minute* time.Duration(1)
+
 	cluster.CQLVersion = cqlVersion
 
 	cluster.Keyspace = "system"
@@ -176,6 +190,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 			ok := caPool.AppendCertsFromPEM([]byte(rootCA))
 
 			if !ok {
+				mutex.Unlock()
 				return nil, errors.New("Unable to load rootCA")
 			}
 
@@ -187,6 +202,17 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 		}
 	}
 
-	return cluster, nil
+	_session, err := cluster.CreateSession()
 
+	if err != nil {
+		mutex.Unlock()
+
+		return nil, err
+	}
+
+	session = _session
+
+	mutex.Unlock()
+
+	return session, nil
 }
