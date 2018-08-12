@@ -8,6 +8,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
 	"time"
+	"log"
 )
 
 var (
@@ -22,7 +23,7 @@ var (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
-			"keyspace": resourceKeyspace(),
+			"cassandra_keyspace": resourceCassandraKeyspace(),
 		},
 		ConfigureFunc: configureProvider,
 		Schema: map[string]*schema.Schema{
@@ -60,7 +61,9 @@ func Provider() *schema.Provider {
 			},
 			"hosts": &schema.Schema{
 				Type:     schema.TypeList,
-				Elem:     schema.TypeString,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
 				MinItems: 1,
 				Required: true,
 			},
@@ -124,7 +127,21 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	port := d.Get("port").(int)
 	connectionTimeout := d.Get("connection_timeout").(int)
 	cqlVersion := d.Get("cql_version").(string)
-	hosts := d.Get("hosts").([]string)
+
+	log.Printf("Using port", port)
+	log.Printf("Using use_ssl", useSSL)
+	log.Printf("Using username", username)
+	log.Printf("Using cql_version", cqlVersion)
+
+	rawHosts := d.Get("hosts").([]interface{})
+
+	hosts := make([]string, len(rawHosts))
+
+	for _, value := range rawHosts {
+		hosts = append(hosts, value.(string))
+
+		log.Printf("Using host", value.(string))
+	}
 
 	cluster := gocql.NewCluster()
 
@@ -170,6 +187,6 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 		}
 	}
 
-	return cluster.CreateSession()
+	return cluster, nil
 
 }

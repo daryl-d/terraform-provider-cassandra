@@ -8,8 +8,8 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
+	"log"
 )
 
 const (
@@ -26,7 +26,7 @@ var (
 	}
 )
 
-func resourceKeyspace() *schema.Resource {
+func resourceCassandraKeyspace() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceKeyspaceCreate,
 		Read:   resourceKeyspaceRead,
@@ -73,14 +73,19 @@ func resourceKeyspace() *schema.Resource {
 				Required:    true,
 				ForceNew:    false,
 				Description: "strategy options used with replication strategy",
-				Elem:        schema.TypeInt,
+				Elem:        &schema.Schema{
+					Type: schema.TypeString,
+				},
 				StateFunc: func(v interface{}) string {
-					strategyOptions := v.(map[string]int)
+					strategyOptions := v.(map[string]interface{})
 
 					keys := make([]string, len(strategyOptions))
 
 					for key, value := range strategyOptions {
-						keys = append(keys, fmt.Sprintf("%q=%q", key, value))
+
+						strValue := value.(string)
+
+						keys = append(keys, fmt.Sprintf("%q=%q", key, strValue))
 					}
 
 					sort.Strings(keys)
@@ -108,76 +113,85 @@ func hash(s string) string {
 func resourceKeyspaceExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
 	name := d.Get("name").(string)
 
-	session := meta.(gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
 
-	_, err := session.KeyspaceMetadata(name)
+	session, sessionCreationError := cluster.CreateSession()
 
-	if err == nil {
-		return false, err
+	if sessionCreationError != nil {
+		return false, sessionCreationError
+	}
+
+	defer session.Close()
+
+	_, keyspaceDoesNotExist := session.KeyspaceMetadata(name)
+
+	if keyspaceDoesNotExist == nil {
+		return false, keyspaceDoesNotExist
 	}
 
 	return true, nil
 }
 
-func generateCreateOrUpdateKeyspaceQueryString(name string, create bool, replicationStrategy string, strategyOptions map[string]int, durableWrites bool) (string, []interface{}, error) {
+func generateCreateOrUpdateKeyspaceQueryString(name string, create bool, replicationStrategy string, strategyOptions map[string]interface{}, durableWrites bool) (string, error) {
 
 	numberOfStrategyOptions := len(strategyOptions)
 
 	if numberOfStrategyOptions == 0 {
-		return "", make([]interface{}, 0), fmt.Errorf("Must specify stratgey options - see https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlCreateKeyspace.html")
+		return "", fmt.Errorf("Must specify stratgey options - see https://docs.datastax.com/en/cql/3.3/cql/cql_reference/cqlCreateKeyspace.html")
 	}
 
-	if replicationStrategy == "SimpleStrategy" && strategyOptions["replication_factor"] <= 0 {
-		return "", make([]interface{}, 0), fmt.Errorf("Must specify replication_factor greater than zero with %s", strategyOptions)
-	}
-
-	size := numberOfStrategyOptions*2 + 3
-
-	args := make([]interface{}, size)
-	args[0] = name
-	args[1] = replicationStrategy
-	args[size-1] = durableWrites
-
-	pos := 2
-
-	action := boolToAction[create]
-
-	statement := fmt.Sprintf(`
-		%s KEYSPACE ? WITH REPLICATION = { 'class' : '?'`, action)
+	query := fmt.Sprintf(`%s KEYSPACE %s WITH REPLICATION = { 'class' : '%s'`, boolToAction[create], name, replicationStrategy)
 
 	for key, value := range strategyOptions {
-		args[pos] = key
-		args[pos+1] = value
-		statement += `, ? = '?'`
-		pos += 2
+		query += fmt.Sprintf(`, '%s' : '%s'`, key, value.(string))
 	}
 
-	statement += ` } AND DURABLE_WRITES = ?`
+	query += fmt.Sprintf(` } AND DURABLE_WRITES = %t`, durableWrites)
 
-	return statement, args, nil
+	log.Println( "query", query)
+
+	return query, nil
 }
 
 func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 	replicationStrategy := d.Get("replication_strategy").(string)
-	strategyOptions := d.Get("strategy_options").(map[string]int)
+	strategyOptions := d.Get("strategy_options").(map[string]interface{})
 	durableWrites := d.Get("durable_writes").(bool)
 
-	statement, args, err := generateCreateOrUpdateKeyspaceQueryString(name, true, replicationStrategy, strategyOptions, durableWrites)
+	query, err := generateCreateOrUpdateKeyspaceQueryString(name, true, replicationStrategy, strategyOptions, durableWrites)
 
 	if err != nil {
 		return err
 	}
 
-	session := meta.(gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
 
-	return session.Query(statement, args).Exec()
+	session, sessionCreationError := cluster.CreateSession()
+
+	if sessionCreationError != nil {
+		return sessionCreationError
+	}
+
+	defer session.Close()
+
+	d.SetId(name)
+
+	return session.Query(query).Exec()
 }
 
 func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 
-	session := meta.(gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
+
+	session, sessionCreationError := cluster.CreateSession()
+
+	if sessionCreationError != nil {
+		return sessionCreationError
+	}
+
+	defer session.Close()
 
 	keyspaceMetadata, err := session.KeyspaceMetadata(name)
 
@@ -185,16 +199,10 @@ func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	strategyOptions := make(map[string]int)
+	strategyOptions := make(map[string]string)
 
 	for key, value := range keyspaceMetadata.StrategyOptions {
-		intVal, err := strconv.Atoi(value.(string))
-
-		if err != nil {
-			return fmt.Errorf("Could not convert strategy option [%s] = %s to an integer", key, value)
-		}
-
-		strategyOptions[key] = intVal
+		strategyOptions[key] = value.(string)
 	}
 
 	strategyClass := strings.TrimPrefix(keyspaceMetadata.StrategyClass, "org.apache.cassandra.locator.")
@@ -202,6 +210,7 @@ func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("replication_strategy", strategyClass)
 	d.Set("durable_writes", keyspaceMetadata.DurableWrites)
 	d.Set("strategy_options", strategyOptions)
+	d.SetId(name)
 
 	return nil
 }
@@ -209,24 +218,32 @@ func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 func resourceKeyspaceDelete(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 
-	session := meta.(gocql.Session)
+	session := meta.(*gocql.Session)
 
-	return session.Query(`DROP KEYSPACE ?`, name).Exec()
+	return session.Query(fmt.Sprintf(`DROP KEYSPACE %s`, name)).Exec()
 }
 
 func resourceKeyspaceUpdate(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 	replicationStrategy := d.Get("replication_strategy").(string)
-	strategyOptions := d.Get("strategy_options").(map[string]int)
+	strategyOptions := d.Get("strategy_options").(map[string]interface{})
 	durableWrites := d.Get("durable_writes").(bool)
 
-	statement, args, err := generateCreateOrUpdateKeyspaceQueryString(name, false, replicationStrategy, strategyOptions, durableWrites)
+	query, err := generateCreateOrUpdateKeyspaceQueryString(name, false, replicationStrategy, strategyOptions, durableWrites)
 
 	if err != nil {
 		return err
 	}
 
-	session := meta.(gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
 
-	return session.Query(statement, args).Exec()
+	session, sessionCreationError := cluster.CreateSession()
+
+	if sessionCreationError != nil {
+		return sessionCreationError
+	}
+
+	defer session.Close()
+
+	return session.Query(query).Exec()
 }
