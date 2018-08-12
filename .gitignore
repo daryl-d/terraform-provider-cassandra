@@ -14,4 +14,4 @@
 *.out
 
 # final binary
-terraform-cassandra-provider
+terraform-provider-cassandra
