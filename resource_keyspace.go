@@ -53,7 +53,7 @@ func resourceKeyspace() *schema.Resource {
 					return
 				},
 			},
-			"replicationStrategy": &schema.Schema{
+			"replication_strategy": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    false,
@@ -61,14 +61,14 @@ func resourceKeyspace() *schema.Resource {
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					strategy := i.(string)
 
-					if !keyspaceRegex.MatchString(strategy) {
+					if !strategyRegex.MatchString(strategy) {
 						errors = append(errors, fmt.Errorf("%s: invalid replication strategy - must match %s", strategy, strategyLiteralPatten))
 					}
 
 					return
 				},
 			},
-			"strategyOptions": &schema.Schema{
+			"strategy_options": &schema.Schema{
 				Type:        schema.TypeMap,
 				Required:    true,
 				ForceNew:    false,
@@ -88,9 +88,9 @@ func resourceKeyspace() *schema.Resource {
 					return hash(strings.Join(keys, ", "))
 				},
 			},
-			"durableWrites": &schema.Schema{
+			"durable_writes": &schema.Schema{
 				Type:        schema.TypeBool,
-				Required:    true,
+				Optional:     true,
 				ForceNew:    false,
 				Description: "Enable or disable durable writes - disabling is not recommended",
 				Default:     true,
@@ -159,9 +159,9 @@ func generateCreateOrUpdateKeyspaceQueryString(name string, create bool, replica
 
 func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
-	replicationStrategy := d.Get("replicationStrategy").(string)
-	strategyOptions := d.Get("strategyOptions").(map[string]int)
-	durableWrites := d.Get("durableWrites").(bool)
+	replicationStrategy := d.Get("replication_strategy").(string)
+	strategyOptions := d.Get("strategy_options").(map[string]int)
+	durableWrites := d.Get("durable_writes").(bool)
 
 	statement, args, err := generateCreateOrUpdateKeyspaceQueryString(name, true, replicationStrategy, strategyOptions, durableWrites)
 
@@ -199,9 +199,9 @@ func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 
 	strategyClass := strings.TrimPrefix(keyspaceMetadata.StrategyClass, "org.apache.cassandra.locator.")
 
-	d.Set("replicationStrategy", strategyClass)
-	d.Set("durableWrites", keyspaceMetadata.DurableWrites)
-	d.Set("strategyOptions", strategyOptions)
+	d.Set("replication_strategy", strategyClass)
+	d.Set("durable_writes", keyspaceMetadata.DurableWrites)
+	d.Set("strategy_options", strategyOptions)
 
 	return nil
 }
@@ -216,9 +216,9 @@ func resourceKeyspaceDelete(d *schema.ResourceData, meta interface{}) error {
 
 func resourceKeyspaceUpdate(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
-	replicationStrategy := d.Get("replicationStrategy").(string)
-	strategyOptions := d.Get("strategyOptions").(map[string]int)
-	durableWrites := d.Get("durableWrites").(bool)
+	replicationStrategy := d.Get("replication_strategy").(string)
+	strategyOptions := d.Get("strategy_options").(map[string]int)
+	durableWrites := d.Get("durable_writes").(bool)
 
 	statement, args, err := generateCreateOrUpdateKeyspaceQueryString(name, false, replicationStrategy, strategyOptions, durableWrites)
 
