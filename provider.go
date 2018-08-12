@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
-	"time"
 	"log"
+	"time"
 )
 
 var (
@@ -55,12 +55,12 @@ func Provider() *schema.Provider {
 			},
 			"cql_version": &schema.Schema{
 				Type:        schema.TypeString,
-				Optional: true,
+				Optional:    true,
 				Default:     "3.4.4",
 				Description: "CQL Version",
 			},
 			"hosts": &schema.Schema{
-				Type:     schema.TypeList,
+				Type: schema.TypeList,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
@@ -69,7 +69,7 @@ func Provider() *schema.Provider {
 			},
 			"connection_timeout": &schema.Schema{
 				Type:        schema.TypeInt,
-				Optional: true,
+				Optional:    true,
 				Default:     1000,
 				Description: "Connection timeout in milliseconds",
 			},
@@ -158,7 +158,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	cluster.ConnectTimeout = time.Millisecond * time.Duration(connectionTimeout)
 
-	cluster.Timeout = time.Minute* time.Duration(1)
+	cluster.Timeout = time.Minute * time.Duration(1)
 
 	cluster.CQLVersion = cqlVersion
 

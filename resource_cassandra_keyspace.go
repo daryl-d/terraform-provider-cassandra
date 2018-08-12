@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 	"regexp"
 	"sort"
 	"strings"
-	"log"
 	"time"
 )
 
@@ -74,7 +74,7 @@ func resourceCassandraKeyspace() *schema.Resource {
 				Required:    true,
 				ForceNew:    false,
 				Description: "strategy options used with replication strategy",
-				Elem:        &schema.Schema{
+				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
 				StateFunc: func(v interface{}) string {
@@ -96,7 +96,7 @@ func resourceCassandraKeyspace() *schema.Resource {
 			},
 			"durable_writes": &schema.Schema{
 				Type:        schema.TypeBool,
-				Optional:     true,
+				Optional:    true,
 				ForceNew:    false,
 				Description: "Enable or disable durable writes - disabling is not recommended",
 				Default:     true,
@@ -154,7 +154,7 @@ func generateCreateOrUpdateKeyspaceQueryString(name string, create bool, replica
 
 	query += fmt.Sprintf(` } AND DURABLE_WRITES = %t`, durableWrites)
 
-	log.Println( "query", query)
+	log.Println("query", query)
 
 	return query, nil
 }
