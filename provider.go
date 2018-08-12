@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 	"time"
 	"log"
-	"sync"
 )
 
 var (
@@ -120,18 +119,9 @@ func Provider() *schema.Provider {
 	}
 }
 
-var session *gocql.Session = nil
-var mutex = &sync.Mutex{}
-
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	log.Printf("Creating provider")
-
-	mutex.Lock()
-
-	if session != nil {
-		return session, nil
-	}
 
 	useSSL := d.Get("use_ssl").(bool)
 	username := d.Get("username").(string)
@@ -161,8 +151,6 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	cluster.Port = port
 
-	cluster.Consistency = gocql.All
-
 	cluster.Authenticator = &gocql.PasswordAuthenticator{
 		Username: username,
 		Password: password,
@@ -175,6 +163,8 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	cluster.CQLVersion = cqlVersion
 
 	cluster.Keyspace = "system"
+
+	cluster.DisableInitialHostLookup = true
 
 	if useSSL {
 
@@ -190,7 +180,6 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 			ok := caPool.AppendCertsFromPEM([]byte(rootCA))
 
 			if !ok {
-				mutex.Unlock()
 				return nil, errors.New("Unable to load rootCA")
 			}
 
@@ -202,17 +191,5 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 		}
 	}
 
-	_session, err := cluster.CreateSession()
-
-	if err != nil {
-		mutex.Unlock()
-
-		return nil, err
-	}
-
-	session = _session
-
-	mutex.Unlock()
-
-	return session, nil
+	return cluster, nil
 }

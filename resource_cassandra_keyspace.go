@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"log"
+	"time"
 )
 
 const (
@@ -22,7 +23,7 @@ var (
 	strategyRegex, _ = regexp.Compile(strategyLiteralPatten)
 	boolToAction     = map[bool]string{
 		true:  "CREATE",
-		false: "UPDATE",
+		false: "ALTER",
 	}
 )
 
@@ -113,8 +114,21 @@ func hash(s string) string {
 func resourceKeyspaceExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
 	name := d.Get("name").(string)
 
-	session := meta.(*gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
 
+	start := time.Now()
+
+	session, sessionCreateError := cluster.CreateSession()
+
+	elapsed := time.Since(start)
+
+	log.Printf("Getting a session took %s", elapsed)
+
+	if sessionCreateError != nil {
+		return false, sessionCreateError
+	}
+
+	defer session.Close()
 	_, err := session.KeyspaceMetadata(name)
 
 	if err != nil {
@@ -157,7 +171,21 @@ func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	session := meta.(*gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
+
+	start := time.Now()
+
+	session, sessionCreateError := cluster.CreateSession()
+
+	elapsed := time.Since(start)
+
+	log.Printf("Getting a session took %s", elapsed)
+
+	if sessionCreateError != nil {
+		return sessionCreateError
+	}
+
+	defer session.Close()
 
 	d.SetId(name)
 
@@ -167,7 +195,21 @@ func resourceKeyspaceCreate(d *schema.ResourceData, meta interface{}) error {
 func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 
-	session := meta.(*gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
+
+	start := time.Now()
+
+	session, sessionCreateError := cluster.CreateSession()
+
+	elapsed := time.Since(start)
+
+	log.Printf("Getting a session took %s", elapsed)
+
+	if sessionCreateError != nil {
+		return sessionCreateError
+	}
+
+	defer session.Close()
 
 	keyspaceMetadata, err := session.KeyspaceMetadata(name)
 
@@ -194,7 +236,21 @@ func resourceKeyspaceRead(d *schema.ResourceData, meta interface{}) error {
 func resourceKeyspaceDelete(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
 
-	session := meta.(*gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
+
+	start := time.Now()
+
+	session, sessionCreateError := cluster.CreateSession()
+
+	elapsed := time.Since(start)
+
+	log.Printf("Getting a session took %s", elapsed)
+
+	if sessionCreateError != nil {
+		return sessionCreateError
+	}
+
+	defer session.Close()
 
 	return session.Query(fmt.Sprintf(`DROP KEYSPACE %s`, name)).Exec()
 }
@@ -211,7 +267,21 @@ func resourceKeyspaceUpdate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	session := meta.(*gocql.Session)
+	cluster := meta.(*gocql.ClusterConfig)
+
+	start := time.Now()
+
+	session, sessionCreateError := cluster.CreateSession()
+
+	elapsed := time.Since(start)
+
+	log.Printf("Getting a session took %s", elapsed)
+
+	if sessionCreateError != nil {
+		return sessionCreateError
+	}
+
+	defer session.Close()
 
 	return session.Query(query).Exec()
 }
