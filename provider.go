@@ -131,10 +131,10 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	connectionTimeout := d.Get("connection_timeout").(int)
 	cqlVersion := d.Get("cql_version").(string)
 
-	log.Printf("Using port", port)
-	log.Printf("Using use_ssl", useSSL)
-	log.Printf("Using username", username)
-	log.Printf("Using cql_version", cqlVersion)
+	log.Printf("Using port %d", port)
+	log.Printf("Using use_ssl %v", useSSL)
+	log.Printf("Using username %s", username)
+	log.Printf("Using cql_version %s", cqlVersion)
 
 	rawHosts := d.Get("hosts").([]interface{})
 
@@ -143,7 +143,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	for _, value := range rawHosts {
 		hosts = append(hosts, value.(string))
 
-		log.Printf("Using host", value.(string))
+		log.Printf("Using host %v", value.(string))
 	}
 
 	cluster := gocql.NewCluster()
