@@ -24,6 +24,7 @@ func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
 			"cassandra_keyspace": resourceCassandraKeyspace(),
+			"cassandra_role":     resourceCassandraRole(),
 		},
 		ConfigureFunc: configureProvider,
 		Schema: map[string]*schema.Schema{
