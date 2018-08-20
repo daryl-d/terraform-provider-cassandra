@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	validPasswordRegexLiteral = `^[^']{40,512}$`
-	validRoleRegexLiteral     = `^[^']{1,256}$`
+	validPasswordRegexLiteral = `^[^"]{40,512}$`
+	validRoleRegexLiteral     = `^[^"]{1,256}$`
 )
 
 var (
@@ -152,7 +152,7 @@ func resourceRoleCreateOrUpdate(d *schema.ResourceData, meta interface{}, create
 
 	defer session.Close()
 
-	createErr := session.Query(fmt.Sprintf(`%s ROLE '%s' WITH PASSWORD = '%s' AND LOGIN = %v AND SUPERUSER = %v`, boolToAction[createRole], name, password, login, superUser)).Exec()
+	createErr := session.Query(fmt.Sprintf(`%s ROLE "%s" WITH PASSWORD = "%s" AND LOGIN = %v AND SUPERUSER = %v`, boolToAction[createRole], name, password, login, superUser)).Exec()
 	if createErr != nil {
 		return createErr
 	}

@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
-	"log"
-	"time"
 	"strings"
 	"regexp"
 )
 
 const (
+
+	create_grant_raw_template = `CREATE GRANT {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
+	read_grant_raw_template = `LIST {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
+
 	priviledge_all       = "all"
 	priviledge_create    = "create"
 	priviledge_alter     = "alter"
@@ -48,7 +50,8 @@ const (
 
 var (
 
-	validIdentifierRegex, _   = regexp.Compile(`^[^']{1,256}$`)
+	validIdentifierRegex, _   = regexp.Compile(`^[^"]{1,256}$`)
+	validTableNameRegex, _ = regexp.Compile(`^[a-zA-Z0-9][a-zA-Z0-9_]{0,255}$`)
 
 	all_priviledges = []string{priviledge_select, priviledge_create, priviledge_alter, priviledge_drop, priviledge_modify, priviledge_authorize, priviledge_describe, priviledge_execute}
 
@@ -92,10 +95,18 @@ var (
 	}
 )
 
-func validIdentifier(i interface{}, s string, identifer_name string) (ws []string, errors []error) {
+type Grant struct {
+	Priviledge string
+	Grantee string
+	Keyspace string
+	Identifier string
+}
+
+
+func validIdentifier(i interface{}, s string, identifer_name string, regular_expression *regexp.Regexp) (ws []string, errors []error) {
 	identifier := i.(string)
 
-	if identifer_name != "" && !validIdentifierRegex.MatchString(identifier) {
+	if identifer_name != "" && !regular_expression.MatchString(identifier) {
 		errors = append(errors, fmt.Errorf("%s in not a valid %s name", identifier, identifer_name))
 	}
 
@@ -132,7 +143,7 @@ func resourceCassandraGrant() *schema.Resource {
 				ForceNew: true,
 				Description: "role name who we are granting priviledge(s) to",
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					return validIdentifier(i, s, "grantee")
+					return validIdentifier(i, s, "grantee", validRoleRegex)
 				},
 			},
 			identifier_resource_type: &schema.Schema{
@@ -170,7 +181,7 @@ func resourceCassandraGrant() *schema.Resource {
 				Optional: true,
 				Description: fmt.Sprintf("keyspace qualifier to the resource, only applicable for resource %s", strings.Join(resources_that_require_keyspace_qualifier, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					return validIdentifier(i, s, "function name")
+					return validIdentifier(i, s, "function name", validIdentifierRegex)
 				},
 				ConflictsWith: []string{identifier_table_name, identifier_role_name, identifier_mbean_name, identifier_mbean_pattern},
 			},
@@ -179,7 +190,7 @@ func resourceCassandraGrant() *schema.Resource {
 				Optional: true,
 				Description: fmt.Sprintf("name of the table, applicable only for resource %s", resource_table),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					return validIdentifier(i, s, "table name")
+					return validIdentifier(i, s, "table name", validTableNameRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_role_name, identifier_mbean_name, identifier_mbean_pattern},
 			},
@@ -188,7 +199,7 @@ func resourceCassandraGrant() *schema.Resource {
 				Optional: true,
 				Description: fmt.Sprintf("name of the role, applicable only for resource %s", resource_role),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					return validIdentifier(i, s, "role name")
+					return validIdentifier(i, s, "role name", validRoleRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_table_name, identifier_mbean_name, identifier_mbean_pattern, identifier_keyspace_name},
 			},
@@ -197,14 +208,14 @@ func resourceCassandraGrant() *schema.Resource {
 				Optional: true,
 				Description: fmt.Sprintf( "name of mbean, only applicable for resource %s", resource_mbean),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					return validIdentifier(i, s, "mbean name")
+					return validIdentifier(i, s, "mbean name", validIdentifierRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_table_name, identifier_role_name, identifier_mbean_pattern, identifier_keyspace_name},
 			},
 			identifier_mbean_pattern : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
-				Description: fmt.Sprintf( "pattern for selecting mbeans, only valid for resource &s", resource_mbeans),
+				Description: fmt.Sprintf( "pattern for selecting mbeans, only valid for resource %s", resource_mbeans),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					mbean_pattern_raw := i.(string)
 
@@ -222,29 +233,7 @@ func resourceCassandraGrant() *schema.Resource {
 	}
 }
 
-func readGrant(session *gocql.Session, name string) (string, bool, bool, string, error) {
-
-	var (
-		role        string
-		canLogin    bool
-		isSuperUser bool
-		saltedHash  string
-	)
-
-	iter := session.Query(`select role, can_login, is_superuser, salted_hash from system_auth.roles where role = ?`, name).Iter()
-
-	defer iter.Close()
-
-	log.Printf("read role query returned %d", iter.NumRows())
-
-	for iter.Scan(&role, &canLogin, &isSuperUser, &saltedHash) {
-		return role, canLogin, isSuperUser, saltedHash, nil
-	}
-
-	return "", false, false, "", nil
-}
-
-func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
+func parseData(d *schema.ResourceData) (*Grant, error) {
 	priviledge := d.Get("priviledge").(string)
 	grantee := d.Get("grantee").(string)
 	resource_type := d.Get("resource_type").(string)
@@ -252,7 +241,7 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 	allowedResouceTypesForPriviledge := privilegeToResourceTypesMap[priviledge]
 
 	if len(allowedResouceTypesForPriviledge) <= 0 {
-		return false, fmt.Errorf("%s resource not applicable for priviledge %s", resource_type, priviledge)
+		return nil, fmt.Errorf("%s resource not applicable for priviledge %s", resource_type, priviledge)
 	}
 
 	var match_found = false
@@ -264,7 +253,7 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 	}
 
 	if !match_found {
-		return false, fmt.Errorf("%s resource not applicable for priviledge %s - valid resource_types are %s", resource_type, priviledge, strings.Join(allowedResouceTypesForPriviledge, ", "))
+		return nil, fmt.Errorf("%s resource not applicable for priviledge %s - valid resource_types are %s", resource_type, priviledge, strings.Join(allowedResouceTypesForPriviledge, ", "))
 	}
 
 	var requires_keyspace_qualifier = false
@@ -282,30 +271,45 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 		keyspace_name = d.Get("keyspace_name").(string)
 
 		if keyspace_name == "" {
-			return false, fmt.Errorf("keyspace name must be set for resource_type %s", resource_type)
+			return nil, fmt.Errorf("keyspace name must be set for resource_type %s", resource_type)
 		}
 	}
-
 
 	identifier_key := resource_type_to_identifier[resource_type]
 
 	var identifier = ""
 
-
 	if identifier_key != "" {
 		identifier = d.Get(identifier_key).(string)
 
 		if identifier == "" {
-			return false, fmt.Errorf( "%s needs to be set when resource_type = %s", identifier_key, resource_type)
+			return nil, fmt.Errorf( "%s needs to be set when resource_type = %s", identifier_key, resource_type)
 		}
 	}
 
-	type Model struct {
-		Priviledge string
-		Grantee string
-		Keyspace string
-		Identifier string
+	return &Grant{priviledge, grantee, keyspace_name, identifier}, nil
+}
+
+func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
+	grant, err := parseData(d)
+
+	if err != nil {
+		return false, err
 	}
+
+	cluster := meta.(gocql.ClusterConfig)
+
+	session, sessionCreationError := cluster.CreateSession()
+
+	if sessionCreationError != nil {
+		return false, sessionCreationError
+	}
+
+	defer session.Close()
+
+
+	session.Query()
+
 
 }
 
