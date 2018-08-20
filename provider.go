@@ -25,6 +25,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"cassandra_keyspace": resourceCassandraKeyspace(),
 			"cassandra_role":     resourceCassandraRole(),
+			"cassandra_grant" : resourceCassandraGrant(),
 		},
 		ConfigureFunc: configureProvider,
 		Schema: map[string]*schema.Schema{
@@ -53,12 +54,6 @@ func Provider() *schema.Provider {
 
 					return
 				},
-			},
-			"cql_version": &schema.Schema{
-				Type:        schema.TypeString,
-				Optional:    true,
-				Default:     "3.4.4",
-				Description: "CQL Version",
 			},
 			"hosts": &schema.Schema{
 				Type: schema.TypeList,
@@ -129,12 +124,10 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	password := d.Get("password").(string)
 	port := d.Get("port").(int)
 	connectionTimeout := d.Get("connection_timeout").(int)
-	cqlVersion := d.Get("cql_version").(string)
 
 	log.Printf("Using port %d", port)
 	log.Printf("Using use_ssl %v", useSSL)
 	log.Printf("Using username %s", username)
-	log.Printf("Using cql_version %s", cqlVersion)
 
 	rawHosts := d.Get("hosts").([]interface{})
 
@@ -161,7 +154,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	cluster.Timeout = time.Minute * time.Duration(1)
 
-	cluster.CQLVersion = cqlVersion
+	cluster.CQLVersion = "3.0.0"
 
 	cluster.Keyspace = "system"
 

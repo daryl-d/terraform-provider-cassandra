@@ -6,11 +6,15 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 	"strings"
 	"regexp"
+	"html/template"
+	"bytes"
+	"log"
 )
 
 const (
 
-	create_grant_raw_template = `CREATE GRANT {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
+	delete_grant_raw_template = `REVOKE {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} FROM "{{.Grantee}}"`
+	create_grant_raw_template = `GRANT {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
 	read_grant_raw_template = `LIST {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
 
 	priviledge_all       = "all"
@@ -49,6 +53,9 @@ const (
 )
 
 var (
+	template_delete, _ = template.New("delete_grant").Parse(delete_grant_raw_template)
+	template_create, _ = template.New("create_grant").Parse(create_grant_raw_template)
+	template_read, _ = template.New("read_grant").Parse(read_grant_raw_template)
 
 	validIdentifierRegex, _   = regexp.Compile(`^[^"]{1,256}$`)
 	validTableNameRegex, _ = regexp.Compile(`^[a-zA-Z0-9][a-zA-Z0-9_]{0,255}$`)
@@ -97,6 +104,7 @@ var (
 
 type Grant struct {
 	Priviledge string
+	ResourceType string
 	Grantee string
 	Keyspace string
 	Identifier string
@@ -147,7 +155,7 @@ func resourceCassandraGrant() *schema.Resource {
 				},
 			},
 			identifier_resource_type: &schema.Schema{
-				Type:        schema.TypeBool,
+				Type:        schema.TypeString,
 				Required: true,
 				ForceNew: true,
 				Description: fmt.Sprintf("Resource type we are granting priviledge to. Must be one of %s", strings.Join(all_resources, ", ")),
@@ -164,6 +172,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_keyspace_name : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: fmt.Sprintf("keyspace qualifier to the resource, only applicable for resource %s", strings.Join(resources_that_require_keyspace_qualifier, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					keyspace_name := i.(string)
@@ -188,6 +197,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_table_name : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: fmt.Sprintf("name of the table, applicable only for resource %s", resource_table),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "table name", validTableNameRegex)
@@ -197,6 +207,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_role_name : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: fmt.Sprintf("name of the role, applicable only for resource %s", resource_role),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "role name", validRoleRegex)
@@ -206,6 +217,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_mbean_name : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: fmt.Sprintf( "name of mbean, only applicable for resource %s", resource_mbean),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "mbean name", validIdentifierRegex)
@@ -215,6 +227,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_mbean_pattern : &schema.Schema{
 				Type: schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: fmt.Sprintf( "pattern for selecting mbeans, only valid for resource %s", resource_mbeans),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					mbean_pattern_raw := i.(string)
@@ -234,9 +247,9 @@ func resourceCassandraGrant() *schema.Resource {
 }
 
 func parseData(d *schema.ResourceData) (*Grant, error) {
-	priviledge := d.Get("priviledge").(string)
-	grantee := d.Get("grantee").(string)
-	resource_type := d.Get("resource_type").(string)
+	priviledge := d.Get(identifier_priviledge).(string)
+	grantee := d.Get(identifier_grantee).(string)
+	resource_type := d.Get(identifier_resource_type).(string)
 
 	allowedResouceTypesForPriviledge := privilegeToResourceTypesMap[priviledge]
 
@@ -268,7 +281,7 @@ func parseData(d *schema.ResourceData) (*Grant, error) {
 	var keyspace_name = ""
 
 	if requires_keyspace_qualifier {
-		keyspace_name = d.Get("keyspace_name").(string)
+		keyspace_name = d.Get(identifier_keyspace_name).(string)
 
 		if keyspace_name == "" {
 			return nil, fmt.Errorf("keyspace name must be set for resource_type %s", resource_type)
@@ -287,7 +300,7 @@ func parseData(d *schema.ResourceData) (*Grant, error) {
 		}
 	}
 
-	return &Grant{priviledge, grantee, keyspace_name, identifier}, nil
+	return &Grant{priviledge, resource_type, grantee, keyspace_name, identifier}, nil
 }
 
 func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
@@ -297,7 +310,7 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 		return false, err
 	}
 
-	cluster := meta.(gocql.ClusterConfig)
+	cluster := meta.(*gocql.ClusterConfig)
 
 	session, sessionCreationError := cluster.CreateSession()
 
@@ -308,27 +321,122 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 	defer session.Close()
 
 
-	session.Query()
+	var buffer bytes.Buffer
+	templateRenderError := template_read.Execute(&buffer, grant)
 
+	if templateRenderError != nil {
+		return false, templateRenderError
+	}
 
+	query := buffer.String()
+
+	iter := session.Query(query).Iter()
+
+	row_count := iter.NumRows()
+
+	iterError := iter.Close()
+
+	return row_count > 0, iterError
 }
 
 func resourceGrantCreate(d *schema.ResourceData, meta interface{}) error {
+	grant, err := parseData(d)
 
-}
+	if err != nil {
+		return err
+	}
 
-func resourceGrantCreateOrUpdate(d *schema.ResourceData, meta interface{}, createRole bool) error {
-	return nil
+	cluster := meta.(*gocql.ClusterConfig)
+
+	session, sessionCreationError := cluster.CreateSession()
+
+	if sessionCreationError != nil {
+		return sessionCreationError
+	}
+
+	defer session.Close()
+
+	var buffer bytes.Buffer
+
+	templateRenderError := template_create.Execute(&buffer, grant)
+
+	if templateRenderError != nil {
+		return templateRenderError
+	}
+
+	query := buffer.String()
+
+	log.Printf( "Executing query %v", query)
+
+	d.SetId(hash(fmt.Sprintf("%+v", grant)))
+
+	return session.Query(query).Exec()
 }
 
 func resourceGrantRead(d *schema.ResourceData, meta interface{}) error {
+	exists, err := resourceGrantExists(d, meta)
+
+	if err != nil {
+		return err
+	}
+
+	if !exists {
+		return fmt.Errorf("Grant does not exist")
+	}
+
+	grant, err := parseData(d)
+
+	if err != nil {
+		return err
+	}
+
+	d.Set(identifier_resource_type, grant.ResourceType)
+	d.Set(identifier_grantee, grant.Grantee)
+	d.Set(identifier_priviledge, grant.Priviledge)
+
+	if grant.Keyspace != "" {
+		d.Set(identifier_keyspace_name, grant.Keyspace)
+	}
+
+	if grant.Identifier != "" {
+		identifier_name := resource_type_to_identifier[grant.ResourceType]
+
+		d.Set(identifier_name, grant.Identifier)
+	}
+
 	return nil
 }
 
 func resourceGrantDelete(d *schema.ResourceData, meta interface{}) error {
+	grant, err := parseData(d)
 
+	if err != nil {
+		return err
+	}
+
+	var buffer bytes.Buffer
+
+	err = template_delete.Execute(&buffer, grant)
+
+	if err != nil {
+		return err
+	}
+
+	cluster := meta.(*gocql.ClusterConfig)
+
+	session, err := cluster.CreateSession()
+
+	if err != nil {
+		return err
+	}
+
+	query := buffer.String()
+
+	defer session.Close()
+
+	return session.Query(query).Exec()
 }
 
 func resourceGrantUpdate(d *schema.ResourceData, meta interface{}) error {
-
+	return fmt.Errorf("Updating of grants is not supported")
 }
