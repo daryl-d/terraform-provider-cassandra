@@ -1,0 +1,10 @@
+[prune]
+  go-tests = true
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/gocql/gocql"
+
+[[constraint]]
+  name = "github.com/hashicorp/terraform"
+  version = "0.11.7"
