@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/gocql/gocql"
-	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"regexp"
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/gocql/gocql"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 const (

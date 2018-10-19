@@ -5,10 +5,11 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/gocql/gocql"
-	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"time"
+
+	"github.com/gocql/gocql"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 var (
@@ -25,7 +26,7 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"cassandra_keyspace": resourceCassandraKeyspace(),
 			"cassandra_role":     resourceCassandraRole(),
-			"cassandra_grant" : resourceCassandraGrant(),
+			"cassandra_grant":    resourceCassandraGrant(),
 		},
 		ConfigureFunc: configureProvider,
 		Schema: map[string]*schema.Schema{

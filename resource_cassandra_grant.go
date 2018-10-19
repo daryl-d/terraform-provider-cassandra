@@ -1,21 +1,21 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
+	"log"
+	"regexp"
+	"strings"
+
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
-	"strings"
-	"regexp"
-	"html/template"
-	"bytes"
-	"log"
 )
 
 const (
-
 	delete_grant_raw_template = `REVOKE {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} FROM "{{.Grantee}}"`
 	create_grant_raw_template = `GRANT {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
-	read_grant_raw_template = `LIST {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
+	read_grant_raw_template   = `LIST {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
 
 	priviledge_all       = "all"
 	priviledge_create    = "create"
@@ -41,24 +41,23 @@ const (
 	resource_all_mbeans                = "all mbeans"
 
 	identifier_function_name = "function_name"
-	identifier_table_name = "table_name"
-	identifier_mbean_name = "mbean_name"
+	identifier_table_name    = "table_name"
+	identifier_mbean_name    = "mbean_name"
 	identifier_mbean_pattern = "mbean_pattern"
-	identifier_role_name = "role_name"
+	identifier_role_name     = "role_name"
 	identifier_keyspace_name = "keyspace_name"
-	identifier_grantee = "grantee"
-	identifier_priviledge = "priviledge"
+	identifier_grantee       = "grantee"
+	identifier_priviledge    = "priviledge"
 	identifier_resource_type = "resource_type"
-
 )
 
 var (
 	template_delete, _ = template.New("delete_grant").Parse(delete_grant_raw_template)
 	template_create, _ = template.New("create_grant").Parse(create_grant_raw_template)
-	template_read, _ = template.New("read_grant").Parse(read_grant_raw_template)
+	template_read, _   = template.New("read_grant").Parse(read_grant_raw_template)
 
-	validIdentifierRegex, _   = regexp.Compile(`^[^"]{1,256}$`)
-	validTableNameRegex, _ = regexp.Compile(`^[a-zA-Z0-9][a-zA-Z0-9_]{0,255}$`)
+	validIdentifierRegex, _ = regexp.Compile(`^[^"]{1,256}$`)
+	validTableNameRegex, _  = regexp.Compile(`^[a-zA-Z0-9][a-zA-Z0-9_]{0,255}$`)
 
 	all_priviledges = []string{priviledge_select, priviledge_create, priviledge_alter, priviledge_drop, priviledge_modify, priviledge_authorize, priviledge_describe, priviledge_execute}
 
@@ -91,25 +90,24 @@ var (
 		resource_all_mbeans:                true,
 	}
 
-	resources_that_require_keyspace_qualifier = []string{ resource_all_functions_in_keyspace, resource_function, resource_keyspace, resource_table }
+	resources_that_require_keyspace_qualifier = []string{resource_all_functions_in_keyspace, resource_function, resource_keyspace, resource_table}
 
 	resource_type_to_identifier = map[string]string{
-		resource_function  : identifier_function_name,
-		resource_mbean: identifier_mbean_name,
-		resource_mbeans: identifier_mbean_pattern,
-		resource_table: identifier_table_name,
-		resource_role: identifier_role_name,
+		resource_function: identifier_function_name,
+		resource_mbean:    identifier_mbean_name,
+		resource_mbeans:   identifier_mbean_pattern,
+		resource_table:    identifier_table_name,
+		resource_role:     identifier_role_name,
 	}
 )
 
 type Grant struct {
-	Priviledge string
+	Priviledge   string
 	ResourceType string
-	Grantee string
-	Keyspace string
-	Identifier string
+	Grantee      string
+	Keyspace     string
+	Identifier   string
 }
-
 
 func validIdentifier(i interface{}, s string, identifer_name string, regular_expression *regexp.Regexp) (ws []string, errors []error) {
 	identifier := i.(string)
@@ -132,7 +130,7 @@ func resourceCassandraGrant() *schema.Resource {
 			identifier_priviledge: &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew: true,
+				ForceNew:    true,
 				Description: fmt.Sprintf("One of %s", strings.Join(all_priviledges, ", ")),
 
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
@@ -146,9 +144,9 @@ func resourceCassandraGrant() *schema.Resource {
 				},
 			},
 			identifier_grantee: &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
+				Type:        schema.TypeString,
+				Required:    true,
+				ForceNew:    true,
 				Description: "role name who we are granting priviledge(s) to",
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "grantee", validRoleRegex)
@@ -156,8 +154,8 @@ func resourceCassandraGrant() *schema.Resource {
 			},
 			identifier_resource_type: &schema.Schema{
 				Type:        schema.TypeString,
-				Required: true,
-				ForceNew: true,
+				Required:    true,
+				ForceNew:    true,
 				Description: fmt.Sprintf("Resource type we are granting priviledge to. Must be one of %s", strings.Join(all_resources, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					resource_type := i.(string)
@@ -169,10 +167,10 @@ func resourceCassandraGrant() *schema.Resource {
 					return
 				},
 			},
-			identifier_keyspace_name : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
+			identifier_keyspace_name: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
 				Description: fmt.Sprintf("keyspace qualifier to the resource, only applicable for resource %s", strings.Join(resources_that_require_keyspace_qualifier, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					keyspace_name := i.(string)
@@ -185,50 +183,50 @@ func resourceCassandraGrant() *schema.Resource {
 				},
 				ConflictsWith: []string{identifier_role_name, identifier_mbean_name, identifier_mbean_pattern},
 			},
-			identifier_function_name : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
+			identifier_function_name: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
 				Description: fmt.Sprintf("keyspace qualifier to the resource, only applicable for resource %s", strings.Join(resources_that_require_keyspace_qualifier, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "function name", validIdentifierRegex)
 				},
 				ConflictsWith: []string{identifier_table_name, identifier_role_name, identifier_mbean_name, identifier_mbean_pattern},
 			},
-			identifier_table_name : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
+			identifier_table_name: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
 				Description: fmt.Sprintf("name of the table, applicable only for resource %s", resource_table),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "table name", validTableNameRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_role_name, identifier_mbean_name, identifier_mbean_pattern},
 			},
-			identifier_role_name : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
+			identifier_role_name: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
 				Description: fmt.Sprintf("name of the role, applicable only for resource %s", resource_role),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "role name", validRoleRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_table_name, identifier_mbean_name, identifier_mbean_pattern, identifier_keyspace_name},
 			},
-			identifier_mbean_name : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Description: fmt.Sprintf( "name of mbean, only applicable for resource %s", resource_mbean),
+			identifier_mbean_name: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: fmt.Sprintf("name of mbean, only applicable for resource %s", resource_mbean),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "mbean name", validIdentifierRegex)
 				},
 				ConflictsWith: []string{identifier_function_name, identifier_table_name, identifier_role_name, identifier_mbean_pattern, identifier_keyspace_name},
 			},
-			identifier_mbean_pattern : &schema.Schema{
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Description: fmt.Sprintf( "pattern for selecting mbeans, only valid for resource %s", resource_mbeans),
+			identifier_mbean_pattern: &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: fmt.Sprintf("pattern for selecting mbeans, only valid for resource %s", resource_mbeans),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					mbean_pattern_raw := i.(string)
 
@@ -271,8 +269,7 @@ func parseData(d *schema.ResourceData) (*Grant, error) {
 
 	var requires_keyspace_qualifier = false
 
-
-	for _, _resource_type := range( resources_that_require_keyspace_qualifier) {
+	for _, _resource_type := range resources_that_require_keyspace_qualifier {
 		if resource_type == _resource_type {
 			requires_keyspace_qualifier = true
 		}
@@ -296,7 +293,7 @@ func parseData(d *schema.ResourceData) (*Grant, error) {
 		identifier = d.Get(identifier_key).(string)
 
 		if identifier == "" {
-			return nil, fmt.Errorf( "%s needs to be set when resource_type = %s", identifier_key, resource_type)
+			return nil, fmt.Errorf("%s needs to be set when resource_type = %s", identifier_key, resource_type)
 		}
 	}
 
@@ -319,7 +316,6 @@ func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e er
 	}
 
 	defer session.Close()
-
 
 	var buffer bytes.Buffer
 	templateRenderError := template_read.Execute(&buffer, grant)
@@ -366,7 +362,7 @@ func resourceGrantCreate(d *schema.ResourceData, meta interface{}) error {
 
 	query := buffer.String()
 
-	log.Printf( "Executing query %v", query)
+	log.Printf("Executing query %v", query)
 
 	d.SetId(hash(fmt.Sprintf("%+v", grant)))
 
