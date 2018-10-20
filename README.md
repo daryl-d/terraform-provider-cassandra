@@ -7,7 +7,7 @@ It will provide the following features
 
 ## Initialising the provider
 
-```javascript
+```java
 provider cassandra {
   username = "cluster_username"
   password = "cluster_password"
@@ -54,7 +54,7 @@ Default value is __TLS1.2__. It is only applicable when use_ssl is __true__
 
 ### Creating a Keyspace
 
-```javascript
+```java
 locals {
   stategy_options = {
     replication_factor = 1
@@ -91,7 +91,7 @@ Enables or disables durable writes. The default value is __true__. It is not rec
 
 ### Creating a role
 
-```javascript
+```java
 
 resource cassandra role {
   name = "app_user"
@@ -121,7 +121,7 @@ It is required. It has the restriction of being between 40 and 512 characters.
 
 ### Creating a Grant
 
-```javascript
+```java
 resource cassandra grant {
 
 }
