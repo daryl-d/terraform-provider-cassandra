@@ -13,5 +13,8 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# final binary
+terraform-provider-cassandra
 
-terraform-*
+# ignore vscode
+.vscode
