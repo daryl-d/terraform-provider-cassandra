@@ -8,7 +8,7 @@ It will provide the following features with respect to CQL 3.0.0 spec
 ## Initialising the provider
 
 ```java
-provider cassandra {
+provider "cassandra" {
   username = "cluster_username"
   password = "cluster_password"
   port     = "9042"
@@ -61,7 +61,7 @@ locals {
   }
 }
 
-resource cassandra keyspace {
+resource "cassandra_keyspace" "keyspace" {
   name                 = "some_keyspace_name"
   replication_strategy = "SimpleStrategy"
   strategy_options     = "${local.strategy_options}"
@@ -93,7 +93,7 @@ Enables or disables durable writes. The default value is __true__. It is not rec
 
 ```java
 
-resource cassandra role {
+resource "cassandra_role" "role" {
   name = "app_user"
   password = "sup3rS3cr3tPa$$w0rd"
 }
@@ -122,7 +122,7 @@ It is required. It has the restriction of being between 40 and 512 characters.
 ### Creating a Grant
 
 ```java
-resource cassandra grant {
+resource "cassandra_grant" "grant" {
 
 }
 ```
