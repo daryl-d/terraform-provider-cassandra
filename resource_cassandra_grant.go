@@ -13,19 +13,19 @@ import (
 )
 
 const (
-	delete_grant_raw_template = `REVOKE {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} FROM "{{.Grantee}}"`
-	create_grant_raw_template = `GRANT {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
-	read_grant_raw_template   = `LIST {{ .Priviledge }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
+	delete_grant_raw_template = `REVOKE {{ .Privilege }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} FROM "{{.Grantee}}"`
+	create_grant_raw_template = `GRANT {{ .Privilege }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace}}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} TO "{{.Grantee}}"`
+	read_grant_raw_template   = `LIST {{ .Privilege }} ON {{.ResourceType}} {{if .Keyspace }}"{{ .Keyspace }}"{{end}}{{if and .Keyspace .Identifier}}.{{end}}{{if .Identifier}}"{{.Identifier}}"{{end}} OF "{{.Grantee}}"`
 
-	priviledge_all       = "all"
-	priviledge_create    = "create"
-	priviledge_alter     = "alter"
-	priviledge_drop      = "drop"
-	priviledge_select    = "select"
-	priviledge_modify    = "modify"
-	priviledge_authorize = "authorize"
-	priviledge_describe  = "describe"
-	priviledge_execute   = "execute"
+	privilege_all       = "all"
+	privilege_create    = "create"
+	privilege_alter     = "alter"
+	privilege_drop      = "drop"
+	privilege_select    = "select"
+	privilege_modify    = "modify"
+	privilege_authorize = "authorize"
+	privilege_describe  = "describe"
+	privilege_execute   = "execute"
 
 	resource_all_functions             = "all functions"
 	resource_all_functions_in_keyspace = "all functions in keyspace"
@@ -47,7 +47,7 @@ const (
 	identifier_role_name     = "role_name"
 	identifier_keyspace_name = "keyspace_name"
 	identifier_grantee       = "grantee"
-	identifier_priviledge    = "priviledge"
+	identifier_privilege    = "privilege"
 	identifier_resource_type = "resource_type"
 )
 
@@ -59,20 +59,20 @@ var (
 	validIdentifierRegex, _ = regexp.Compile(`^[^"]{1,256}$`)
 	validTableNameRegex, _  = regexp.Compile(`^[a-zA-Z0-9][a-zA-Z0-9_]{0,255}$`)
 
-	all_priviledges = []string{priviledge_select, priviledge_create, priviledge_alter, priviledge_drop, priviledge_modify, priviledge_authorize, priviledge_describe, priviledge_execute}
+	all_privileges = []string{privilege_select, privilege_create, privilege_alter, privilege_drop, privilege_modify, privilege_authorize, privilege_describe, privilege_execute}
 
 	all_resources = []string{resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_keyspaces, resource_keyspace, resource_table, resource_all_roles, resource_role, resource_roles, resource_mbean, resource_mbeans, resource_all_mbeans}
 
 	privilegeToResourceTypesMap = map[string][]string{
-		priviledge_all:       {resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_keyspaces, resource_keyspace, resource_table, resource_all_roles, resource_role},
-		priviledge_create:    {resource_all_keyspaces, resource_keyspace, resource_all_functions, resource_all_functions_in_keyspace, resource_all_roles},
-		priviledge_alter:     {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_roles, resource_role},
-		priviledge_drop:      {resource_keyspace, resource_table, resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_roles, resource_role},
-		priviledge_select:    {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_mbeans, resource_mbeans, resource_mbean},
-		priviledge_modify:    {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_mbeans, resource_mbeans, resource_mbean},
-		priviledge_authorize: {resource_all_keyspaces, resource_keyspace, resource_table, resource_function, resource_all_functions, resource_all_functions_in_keyspace, resource_all_roles, resource_roles},
-		priviledge_describe:  {resource_all_roles, resource_all_mbeans},
-		priviledge_execute:   {resource_all_functions, resource_all_functions_in_keyspace, resource_function},
+		privilege_all:       {resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_keyspaces, resource_keyspace, resource_table, resource_all_roles, resource_role},
+		privilege_create:    {resource_all_keyspaces, resource_keyspace, resource_all_functions, resource_all_functions_in_keyspace, resource_all_roles},
+		privilege_alter:     {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_roles, resource_role},
+		privilege_drop:      {resource_keyspace, resource_table, resource_all_functions, resource_all_functions_in_keyspace, resource_function, resource_all_roles, resource_role},
+		privilege_select:    {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_mbeans, resource_mbeans, resource_mbean},
+		privilege_modify:    {resource_all_keyspaces, resource_keyspace, resource_table, resource_all_mbeans, resource_mbeans, resource_mbean},
+		privilege_authorize: {resource_all_keyspaces, resource_keyspace, resource_table, resource_function, resource_all_functions, resource_all_functions_in_keyspace, resource_all_roles, resource_roles},
+		privilege_describe:  {resource_all_roles, resource_all_mbeans},
+		privilege_execute:   {resource_all_functions, resource_all_functions_in_keyspace, resource_function},
 	}
 
 	validResources = map[string]bool{
@@ -102,7 +102,7 @@ var (
 )
 
 type Grant struct {
-	Priviledge   string
+	Privilege   string
 	ResourceType string
 	Grantee      string
 	Keyspace     string
@@ -127,17 +127,17 @@ func resourceCassandraGrant() *schema.Resource {
 		Delete: resourceGrantDelete,
 		Exists: resourceGrantExists,
 		Schema: map[string]*schema.Schema{
-			identifier_priviledge: &schema.Schema{
+			identifier_privilege: &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: fmt.Sprintf("One of %s", strings.Join(all_priviledges, ", ")),
+				Description: fmt.Sprintf("One of %s", strings.Join(all_privileges, ", ")),
 
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					priviledge := i.(string)
+					privilege := i.(string)
 
-					if len(privilegeToResourceTypesMap[priviledge]) <= 0 {
-						errors = append(errors, fmt.Errorf("%s not one of %s", priviledge, strings.Join(all_priviledges, ", ")))
+					if len(privilegeToResourceTypesMap[privilege]) <= 0 {
+						errors = append(errors, fmt.Errorf("%s not one of %s", privilege, strings.Join(all_privileges, ", ")))
 					}
 
 					return
@@ -147,7 +147,7 @@ func resourceCassandraGrant() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: "role name who we are granting priviledge(s) to",
+				Description: "role name who we are granting privilege(s) to",
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					return validIdentifier(i, s, "grantee", validRoleRegex)
 				},
@@ -156,7 +156,7 @@ func resourceCassandraGrant() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: fmt.Sprintf("Resource type we are granting priviledge to. Must be one of %s", strings.Join(all_resources, ", ")),
+				Description: fmt.Sprintf("Resource type we are granting privilege to. Must be one of %s", strings.Join(all_resources, ", ")),
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
 					resource_type := i.(string)
 
@@ -245,26 +245,26 @@ func resourceCassandraGrant() *schema.Resource {
 }
 
 func parseData(d *schema.ResourceData) (*Grant, error) {
-	priviledge := d.Get(identifier_priviledge).(string)
+	privilege := d.Get(identifier_privilege).(string)
 	grantee := d.Get(identifier_grantee).(string)
 	resource_type := d.Get(identifier_resource_type).(string)
 
-	allowedResouceTypesForPriviledge := privilegeToResourceTypesMap[priviledge]
+	allowedResouceTypesForPrivilege := privilegeToResourceTypesMap[privilege]
 
-	if len(allowedResouceTypesForPriviledge) <= 0 {
-		return nil, fmt.Errorf("%s resource not applicable for priviledge %s", resource_type, priviledge)
+	if len(allowedResouceTypesForPrivilege) <= 0 {
+		return nil, fmt.Errorf("%s resource not applicable for privilege %s", resource_type, privilege)
 	}
 
 	var match_found = false
 
-	for _, value := range allowedResouceTypesForPriviledge {
+	for _, value := range allowedResouceTypesForPrivilege {
 		if value == resource_type {
 			match_found = true
 		}
 	}
 
 	if !match_found {
-		return nil, fmt.Errorf("%s resource not applicable for priviledge %s - valid resource_types are %s", resource_type, priviledge, strings.Join(allowedResouceTypesForPriviledge, ", "))
+		return nil, fmt.Errorf("%s resource not applicable for privilege %s - valid resource_types are %s", resource_type, privilege, strings.Join(allowedResouceTypesForPrivilege, ", "))
 	}
 
 	var requires_keyspace_qualifier = false
@@ -297,7 +297,7 @@ func parseData(d *schema.ResourceData) (*Grant, error) {
 		}
 	}
 
-	return &Grant{priviledge, resource_type, grantee, keyspace_name, identifier}, nil
+	return &Grant{privilege, resource_type, grantee, keyspace_name, identifier}, nil
 }
 
 func resourceGrantExists(d *schema.ResourceData, meta interface{}) (b bool, e error) {
@@ -388,7 +388,7 @@ func resourceGrantRead(d *schema.ResourceData, meta interface{}) error {
 
 	d.Set(identifier_resource_type, grant.ResourceType)
 	d.Set(identifier_grantee, grant.Grantee)
-	d.Set(identifier_priviledge, grant.Priviledge)
+	d.Set(identifier_privilege, grant.Privilege)
 
 	if grant.Keyspace != "" {
 		d.Set(identifier_keyspace_name, grant.Keyspace)

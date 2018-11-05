@@ -123,7 +123,7 @@ It is required. It has the restriction of being between 40 and 512 characters.
 
 ```java
 resource "cassandra_grant" "all_access_to_keyspace" {
-  priviledge = "all"
+  privilege = "all"
   resource_type = "keyspace"
   keyspace_name = "test"
   grantee = "migration"
@@ -132,7 +132,7 @@ resource "cassandra_grant" "all_access_to_keyspace" {
 
 Parameters
 
-#### priviledge
+#### privilege
 
 Type of access we are granting against a resource
 
