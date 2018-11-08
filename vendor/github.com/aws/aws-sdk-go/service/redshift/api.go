@@ -17,7 +17,7 @@ const opAcceptReservedNodeExchange = "AcceptReservedNodeExchange"
 // AcceptReservedNodeExchangeRequest generates a "aws/request.Request" representing the
 // client's request for the AcceptReservedNodeExchange operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -117,7 +117,7 @@ const opAuthorizeClusterSecurityGroupIngress = "AuthorizeClusterSecurityGroupIng
 // AuthorizeClusterSecurityGroupIngressRequest generates a "aws/request.Request" representing the
 // client's request for the AuthorizeClusterSecurityGroupIngress operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -226,7 +226,7 @@ const opAuthorizeSnapshotAccess = "AuthorizeSnapshotAccess"
 // AuthorizeSnapshotAccessRequest generates a "aws/request.Request" representing the
 // client's request for the AuthorizeSnapshotAccess operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -327,7 +327,7 @@ const opCopyClusterSnapshot = "CopyClusterSnapshot"
 // CopyClusterSnapshotRequest generates a "aws/request.Request" representing the
 // client's request for the CopyClusterSnapshot operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -430,7 +430,7 @@ const opCreateCluster = "CreateCluster"
 // CreateClusterRequest generates a "aws/request.Request" representing the
 // client's request for the CreateCluster operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -583,7 +583,7 @@ const opCreateClusterParameterGroup = "CreateClusterParameterGroup"
 // CreateClusterParameterGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateClusterParameterGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -685,7 +685,7 @@ const opCreateClusterSecurityGroup = "CreateClusterSecurityGroup"
 // CreateClusterSecurityGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateClusterSecurityGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -782,7 +782,7 @@ const opCreateClusterSnapshot = "CreateClusterSnapshot"
 // CreateClusterSnapshotRequest generates a "aws/request.Request" representing the
 // client's request for the CreateClusterSnapshot operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -884,7 +884,7 @@ const opCreateClusterSubnetGroup = "CreateClusterSubnetGroup"
 // CreateClusterSubnetGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateClusterSubnetGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -999,7 +999,7 @@ const opCreateEventSubscription = "CreateEventSubscription"
 // CreateEventSubscriptionRequest generates a "aws/request.Request" representing the
 // client's request for the CreateEventSubscription operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1140,7 +1140,7 @@ const opCreateHsmClientCertificate = "CreateHsmClientCertificate"
 // CreateHsmClientCertificateRequest generates a "aws/request.Request" representing the
 // client's request for the CreateHsmClientCertificate operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1240,7 +1240,7 @@ const opCreateHsmConfiguration = "CreateHsmConfiguration"
 // CreateHsmConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the CreateHsmConfiguration operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1341,7 +1341,7 @@ const opCreateSnapshotCopyGrant = "CreateSnapshotCopyGrant"
 // CreateSnapshotCopyGrantRequest generates a "aws/request.Request" representing the
 // client's request for the CreateSnapshotCopyGrant operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1445,7 +1445,7 @@ const opCreateTags = "CreateTags"
 // CreateTagsRequest generates a "aws/request.Request" representing the
 // client's request for the CreateTags operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1539,7 +1539,7 @@ const opDeleteCluster = "DeleteCluster"
 // DeleteClusterRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteCluster operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1645,7 +1645,7 @@ const opDeleteClusterParameterGroup = "DeleteClusterParameterGroup"
 // DeleteClusterParameterGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteClusterParameterGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1733,7 +1733,7 @@ const opDeleteClusterSecurityGroup = "DeleteClusterSecurityGroup"
 // DeleteClusterSecurityGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteClusterSecurityGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1825,7 +1825,7 @@ const opDeleteClusterSnapshot = "DeleteClusterSnapshot"
 // DeleteClusterSnapshotRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteClusterSnapshot operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1915,7 +1915,7 @@ const opDeleteClusterSubnetGroup = "DeleteClusterSubnetGroup"
 // DeleteClusterSubnetGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteClusterSubnetGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2003,7 +2003,7 @@ const opDeleteEventSubscription = "DeleteEventSubscription"
 // DeleteEventSubscriptionRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteEventSubscription operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2089,7 +2089,7 @@ const opDeleteHsmClientCertificate = "DeleteHsmClientCertificate"
 // DeleteHsmClientCertificateRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteHsmClientCertificate operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2174,7 +2174,7 @@ const opDeleteHsmConfiguration = "DeleteHsmConfiguration"
 // DeleteHsmConfigurationRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteHsmConfiguration operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2259,7 +2259,7 @@ const opDeleteSnapshotCopyGrant = "DeleteSnapshotCopyGrant"
 // DeleteSnapshotCopyGrantRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteSnapshotCopyGrant operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2345,7 +2345,7 @@ const opDeleteTags = "DeleteTags"
 // DeleteTagsRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteTags operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2430,7 +2430,7 @@ const opDescribeClusterDbRevisions = "DescribeClusterDbRevisions"
 // DescribeClusterDbRevisionsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterDbRevisions operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2509,7 +2509,7 @@ const opDescribeClusterParameterGroups = "DescribeClusterParameterGroups"
 // DescribeClusterParameterGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterParameterGroups operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2665,7 +2665,7 @@ const opDescribeClusterParameters = "DescribeClusterParameters"
 // DescribeClusterParametersRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterParameters operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2811,7 +2811,7 @@ const opDescribeClusterSecurityGroups = "DescribeClusterSecurityGroups"
 // DescribeClusterSecurityGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterSecurityGroups operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2966,7 +2966,7 @@ const opDescribeClusterSnapshots = "DescribeClusterSnapshots"
 // DescribeClusterSnapshotsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterSnapshots operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3121,7 +3121,7 @@ const opDescribeClusterSubnetGroups = "DescribeClusterSubnetGroups"
 // DescribeClusterSubnetGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterSubnetGroups operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3272,7 +3272,7 @@ const opDescribeClusterTracks = "DescribeClusterTracks"
 // DescribeClusterTracksRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterTracks operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3354,7 +3354,7 @@ const opDescribeClusterVersions = "DescribeClusterVersions"
 // DescribeClusterVersionsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusterVersions operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3488,7 +3488,7 @@ const opDescribeClusters = "DescribeClusters"
 // DescribeClustersRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeClusters operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3639,7 +3639,7 @@ const opDescribeDefaultClusterParameters = "DescribeDefaultClusterParameters"
 // DescribeDefaultClusterParametersRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeDefaultClusterParameters operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3773,7 +3773,7 @@ const opDescribeEventCategories = "DescribeEventCategories"
 // DescribeEventCategoriesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeEventCategories operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3849,7 +3849,7 @@ const opDescribeEventSubscriptions = "DescribeEventSubscriptions"
 // DescribeEventSubscriptionsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeEventSubscriptions operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4000,7 +4000,7 @@ const opDescribeEvents = "DescribeEvents"
 // DescribeEventsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeEvents operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4133,7 +4133,7 @@ const opDescribeHsmClientCertificates = "DescribeHsmClientCertificates"
 // DescribeHsmClientCertificatesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeHsmClientCertificates operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4283,7 +4283,7 @@ const opDescribeHsmConfigurations = "DescribeHsmConfigurations"
 // DescribeHsmConfigurationsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeHsmConfigurations operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4433,7 +4433,7 @@ const opDescribeLoggingStatus = "DescribeLoggingStatus"
 // DescribeLoggingStatusRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeLoggingStatus operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4513,7 +4513,7 @@ const opDescribeOrderableClusterOptions = "DescribeOrderableClusterOptions"
 // DescribeOrderableClusterOptionsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeOrderableClusterOptions operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4651,7 +4651,7 @@ const opDescribeReservedNodeOfferings = "DescribeReservedNodeOfferings"
 // DescribeReservedNodeOfferingsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeReservedNodeOfferings operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4802,7 +4802,7 @@ const opDescribeReservedNodes = "DescribeReservedNodes"
 // DescribeReservedNodesRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeReservedNodes operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4941,7 +4941,7 @@ const opDescribeResize = "DescribeResize"
 // DescribeResizeRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeResize operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5029,7 +5029,7 @@ const opDescribeSnapshotCopyGrants = "DescribeSnapshotCopyGrants"
 // DescribeSnapshotCopyGrantsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeSnapshotCopyGrants operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5117,7 +5117,7 @@ const opDescribeTableRestoreStatus = "DescribeTableRestoreStatus"
 // DescribeTableRestoreStatusRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeTableRestoreStatus operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5203,7 +5203,7 @@ const opDescribeTags = "DescribeTags"
 // DescribeTagsRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeTags operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5307,7 +5307,7 @@ const opDisableLogging = "DisableLogging"
 // DisableLoggingRequest generates a "aws/request.Request" representing the
 // client's request for the DisableLogging operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5387,7 +5387,7 @@ const opDisableSnapshotCopy = "DisableSnapshotCopy"
 // DisableSnapshotCopyRequest generates a "aws/request.Request" representing the
 // client's request for the DisableSnapshotCopy operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5480,7 +5480,7 @@ const opEnableLogging = "EnableLogging"
 // EnableLoggingRequest generates a "aws/request.Request" representing the
 // client's request for the EnableLogging operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5576,7 +5576,7 @@ const opEnableSnapshotCopy = "EnableSnapshotCopy"
 // EnableSnapshotCopyRequest generates a "aws/request.Request" representing the
 // client's request for the EnableSnapshotCopy operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5685,7 +5685,7 @@ const opGetClusterCredentials = "GetClusterCredentials"
 // GetClusterCredentialsRequest generates a "aws/request.Request" representing the
 // client's request for the GetClusterCredentials operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5790,7 +5790,7 @@ const opGetReservedNodeExchangeOfferings = "GetReservedNodeExchangeOfferings"
 // GetReservedNodeExchangeOfferingsRequest generates a "aws/request.Request" representing the
 // client's request for the GetReservedNodeExchangeOfferings operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -5886,7 +5886,7 @@ const opModifyCluster = "ModifyCluster"
 // ModifyClusterRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyCluster operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6032,7 +6032,7 @@ const opModifyClusterDbRevision = "ModifyClusterDbRevision"
 // ModifyClusterDbRevisionRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyClusterDbRevision operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6118,7 +6118,7 @@ const opModifyClusterIamRoles = "ModifyClusterIamRoles"
 // ModifyClusterIamRolesRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyClusterIamRoles operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6203,7 +6203,7 @@ const opModifyClusterParameterGroup = "ModifyClusterParameterGroup"
 // ModifyClusterParameterGroupRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyClusterParameterGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6291,7 +6291,7 @@ const opModifyClusterSubnetGroup = "ModifyClusterSubnetGroup"
 // ModifyClusterSubnetGroupRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyClusterSubnetGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6393,7 +6393,7 @@ const opModifyEventSubscription = "ModifyEventSubscription"
 // ModifyEventSubscriptionRequest generates a "aws/request.Request" representing the
 // client's request for the ModifyEventSubscription operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6504,7 +6504,7 @@ const opModifySnapshotCopyRetentionPeriod = "ModifySnapshotCopyRetentionPeriod"
 // ModifySnapshotCopyRetentionPeriodRequest generates a "aws/request.Request" representing the
 // client's request for the ModifySnapshotCopyRetentionPeriod operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6593,7 +6593,7 @@ const opPurchaseReservedNodeOffering = "PurchaseReservedNodeOffering"
 // PurchaseReservedNodeOfferingRequest generates a "aws/request.Request" representing the
 // client's request for the PurchaseReservedNodeOffering operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6691,7 +6691,7 @@ const opRebootCluster = "RebootCluster"
 // RebootClusterRequest generates a "aws/request.Request" representing the
 // client's request for the RebootCluster operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6779,7 +6779,7 @@ const opResetClusterParameterGroup = "ResetClusterParameterGroup"
 // ResetClusterParameterGroupRequest generates a "aws/request.Request" representing the
 // client's request for the ResetClusterParameterGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6861,12 +6861,135 @@ func (c *Redshift) ResetClusterParameterGroupWithContext(ctx aws.Context, input 
 	return out, req.Send()
 }
 
+const opResizeCluster = "ResizeCluster"
+
+// ResizeClusterRequest generates a "aws/request.Request" representing the
+// client's request for the ResizeCluster operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ResizeCluster for more information on using the ResizeCluster
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ResizeClusterRequest method.
+//    req, resp := client.ResizeClusterRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/ResizeCluster
+func (c *Redshift) ResizeClusterRequest(input *ResizeClusterInput) (req *request.Request, output *ResizeClusterOutput) {
+	op := &request.Operation{
+		Name:       opResizeCluster,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ResizeClusterInput{}
+	}
+
+	output = &ResizeClusterOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ResizeCluster API operation for Amazon Redshift.
+//
+// Changes the size of the cluster. You can change the cluster's type, or change
+// the number or type of nodes. The default behavior is to use the elastic resize
+// method. With an elastic resize your cluster is avaialble for read and write
+// operations more quickly than with the classic resize method.
+//
+// Elastic resize operations have the following restrictions:
+//
+//    * You can only resize clusters of the following types:
+//
+// dc2.large
+//
+// dc2.8xlarge
+//
+// ds2.xlarge
+//
+// ds2.8xlarge
+//
+//    * The type of nodes you add must match the node type for the cluster.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon Redshift's
+// API operation ResizeCluster for usage and error information.
+//
+// Returned Error Codes:
+//   * ErrCodeInvalidClusterStateFault "InvalidClusterState"
+//   The specified cluster is not in the available state.
+//
+//   * ErrCodeClusterNotFoundFault "ClusterNotFound"
+//   The ClusterIdentifier parameter does not refer to an existing cluster.
+//
+//   * ErrCodeNumberOfNodesQuotaExceededFault "NumberOfNodesQuotaExceeded"
+//   The operation would exceed the number of nodes allotted to the account. For
+//   information about increasing your quota, go to Limits in Amazon Redshift
+//   (http://docs.aws.amazon.com/redshift/latest/mgmt/amazon-redshift-limits.html)
+//   in the Amazon Redshift Cluster Management Guide.
+//
+//   * ErrCodeNumberOfNodesPerClusterLimitExceededFault "NumberOfNodesPerClusterLimitExceeded"
+//   The operation would exceed the number of nodes allowed for a cluster.
+//
+//   * ErrCodeInsufficientClusterCapacityFault "InsufficientClusterCapacity"
+//   The number of nodes specified exceeds the allotted capacity of the cluster.
+//
+//   * ErrCodeUnsupportedOptionFault "UnsupportedOptionFault"
+//   A request option was specified that is not supported.
+//
+//   * ErrCodeUnsupportedOperationFault "UnsupportedOperation"
+//   The requested operation isn't supported.
+//
+//   * ErrCodeUnauthorizedOperation "UnauthorizedOperation"
+//   Your account is not authorized to perform the requested operation.
+//
+//   * ErrCodeLimitExceededFault "LimitExceededFault"
+//   The encryption key has exceeded its grant limit in AWS KMS.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/redshift-2012-12-01/ResizeCluster
+func (c *Redshift) ResizeCluster(input *ResizeClusterInput) (*ResizeClusterOutput, error) {
+	req, out := c.ResizeClusterRequest(input)
+	return out, req.Send()
+}
+
+// ResizeClusterWithContext is the same as ResizeCluster with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ResizeCluster for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Redshift) ResizeClusterWithContext(ctx aws.Context, input *ResizeClusterInput, opts ...request.Option) (*ResizeClusterOutput, error) {
+	req, out := c.ResizeClusterRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opRestoreFromClusterSnapshot = "RestoreFromClusterSnapshot"
 
 // RestoreFromClusterSnapshotRequest generates a "aws/request.Request" representing the
 // client's request for the RestoreFromClusterSnapshot operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -7034,7 +7157,7 @@ const opRestoreTableFromClusterSnapshot = "RestoreTableFromClusterSnapshot"
 // RestoreTableFromClusterSnapshotRequest generates a "aws/request.Request" representing the
 // client's request for the RestoreTableFromClusterSnapshot operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -7146,7 +7269,7 @@ const opRevokeClusterSecurityGroupIngress = "RevokeClusterSecurityGroupIngress"
 // RevokeClusterSecurityGroupIngressRequest generates a "aws/request.Request" representing the
 // client's request for the RevokeClusterSecurityGroupIngress operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -7237,7 +7360,7 @@ const opRevokeSnapshotAccess = "RevokeSnapshotAccess"
 // RevokeSnapshotAccessRequest generates a "aws/request.Request" representing the
 // client's request for the RevokeSnapshotAccess operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -7330,7 +7453,7 @@ const opRotateEncryptionKey = "RotateEncryptionKey"
 // RotateEncryptionKeyRequest generates a "aws/request.Request" representing the
 // client's request for the RotateEncryptionKey operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -7832,6 +7955,10 @@ type Cluster struct {
 	// The status of the elastic IP (EIP) address.
 	ElasticIpStatus *ElasticIpStatus `type:"structure"`
 
+	// Indicates the number of nodes the cluster can be resized to with the elastic
+	// resize method.
+	ElasticResizeNumberOfNodeOptions *string `type:"string"`
+
 	// A Boolean value that, if true, indicates that data in the cluster is encrypted
 	// at rest.
 	Encrypted *bool `type:"boolean"`
@@ -8015,6 +8142,12 @@ func (s *Cluster) SetDBName(v string) *Cluster {
 // SetElasticIpStatus sets the ElasticIpStatus field's value.
 func (s *Cluster) SetElasticIpStatus(v *ElasticIpStatus) *Cluster {
 	s.ElasticIpStatus = v
+	return s
+}
+
+// SetElasticResizeNumberOfNodeOptions sets the ElasticResizeNumberOfNodeOptions field's value.
+func (s *Cluster) SetElasticResizeNumberOfNodeOptions(v string) *Cluster {
+	s.ElasticResizeNumberOfNodeOptions = &v
 	return s
 }
 
@@ -13107,12 +13240,19 @@ type DescribeResizeOutput struct {
 	// Valid Values: List of table names
 	ImportTablesNotStarted []*string `type:"list"`
 
+	// An optional string to provide additional details about the resize action.
+	Message *string `type:"string"`
+
 	// While the resize operation is in progress, this value shows the current amount
 	// of data, in megabytes, that has been processed so far. When the resize operation
 	// is complete, this value shows the total amount of data, in megabytes, on
 	// the cluster, which may be more or less than TotalResizeDataInMegaBytes (the
 	// estimated total amount of data before resize).
 	ProgressInMegaBytes *int64 `type:"long"`
+
+	// An enum with possible values of ClassicResize and ElasticResize. These values
+	// describe the type of resize operation being performed.
+	ResizeType *string `type:"string"`
 
 	// The status of the resize operation.
 	//
@@ -13123,6 +13263,12 @@ type DescribeResizeOutput struct {
 	//
 	// Valid Values: multi-node | single-node
 	TargetClusterType *string `type:"string"`
+
+	// The type of encryption for the cluster after the resize is complete.
+	//
+	// Possible values are KMS and None. In the China region possible values are:
+	// Legacy and None.
+	TargetEncryptionType *string `type:"string"`
 
 	// The node type that the cluster will have after the resize operation is complete.
 	TargetNodeType *string `type:"string"`
@@ -13182,9 +13328,21 @@ func (s *DescribeResizeOutput) SetImportTablesNotStarted(v []*string) *DescribeR
 	return s
 }
 
+// SetMessage sets the Message field's value.
+func (s *DescribeResizeOutput) SetMessage(v string) *DescribeResizeOutput {
+	s.Message = &v
+	return s
+}
+
 // SetProgressInMegaBytes sets the ProgressInMegaBytes field's value.
 func (s *DescribeResizeOutput) SetProgressInMegaBytes(v int64) *DescribeResizeOutput {
 	s.ProgressInMegaBytes = &v
+	return s
+}
+
+// SetResizeType sets the ResizeType field's value.
+func (s *DescribeResizeOutput) SetResizeType(v string) *DescribeResizeOutput {
+	s.ResizeType = &v
 	return s
 }
 
@@ -13197,6 +13355,12 @@ func (s *DescribeResizeOutput) SetStatus(v string) *DescribeResizeOutput {
 // SetTargetClusterType sets the TargetClusterType field's value.
 func (s *DescribeResizeOutput) SetTargetClusterType(v string) *DescribeResizeOutput {
 	s.TargetClusterType = &v
+	return s
+}
+
+// SetTargetEncryptionType sets the TargetEncryptionType field's value.
+func (s *DescribeResizeOutput) SetTargetEncryptionType(v string) *DescribeResizeOutput {
+	s.TargetEncryptionType = &v
 	return s
 }
 
@@ -15152,6 +15316,13 @@ type ModifyClusterInput struct {
 	// in the Amazon Redshift Cluster Management Guide.
 	ElasticIp *string `type:"string"`
 
+	// Indicates whether the cluster is encrypted. If the cluster is encrypted and
+	// you provide a value for the KmsKeyId parameter, we will encrypt the cluster
+	// with the provided KmsKeyId. If you don't provide a KmsKeyId, we will encrypt
+	// with the default key. In the China region we will use legacy encryption if
+	// you specify that the cluster is encrypted.
+	Encrypted *bool `type:"boolean"`
+
 	// An option that specifies whether to create the cluster with enhanced VPC
 	// routing enabled. To create a cluster that uses enhanced VPC routing, the
 	// cluster must be in a VPC. For more information, see Enhanced VPC Routing
@@ -15170,6 +15341,10 @@ type ModifyClusterInput struct {
 	// Specifies the name of the HSM configuration that contains the information
 	// the Amazon Redshift cluster can use to retrieve and store keys in an HSM.
 	HsmConfigurationIdentifier *string `type:"string"`
+
+	// The AWS Key Management Service (KMS) key ID of the encryption key that you
+	// want to use to encrypt data in the cluster.
+	KmsKeyId *string `type:"string"`
 
 	// The name for the maintenance track that you want to assign for the cluster.
 	// This name change is asynchronous. The new track name stays in the PendingModifiedValues
@@ -15347,6 +15522,12 @@ func (s *ModifyClusterInput) SetElasticIp(v string) *ModifyClusterInput {
 	return s
 }
 
+// SetEncrypted sets the Encrypted field's value.
+func (s *ModifyClusterInput) SetEncrypted(v bool) *ModifyClusterInput {
+	s.Encrypted = &v
+	return s
+}
+
 // SetEnhancedVpcRouting sets the EnhancedVpcRouting field's value.
 func (s *ModifyClusterInput) SetEnhancedVpcRouting(v bool) *ModifyClusterInput {
 	s.EnhancedVpcRouting = &v
@@ -15362,6 +15543,12 @@ func (s *ModifyClusterInput) SetHsmClientCertificateIdentifier(v string) *Modify
 // SetHsmConfigurationIdentifier sets the HsmConfigurationIdentifier field's value.
 func (s *ModifyClusterInput) SetHsmConfigurationIdentifier(v string) *ModifyClusterInput {
 	s.HsmConfigurationIdentifier = &v
+	return s
+}
+
+// SetKmsKeyId sets the KmsKeyId field's value.
+func (s *ModifyClusterInput) SetKmsKeyId(v string) *ModifyClusterInput {
+	s.KmsKeyId = &v
 	return s
 }
 
@@ -15975,6 +16162,10 @@ type PendingModifiedValues struct {
 	// The pending or in-progress change of the service version.
 	ClusterVersion *string `type:"string"`
 
+	// The encryption type for a cluster. Possible values are: KMS and None. For
+	// the China region the possible values are None, and Legacy.
+	EncryptionType *string `type:"string"`
+
 	// An option that specifies whether to create the cluster with enhanced VPC
 	// routing enabled. To create a cluster that uses enhanced VPC routing, the
 	// cluster must be in a VPC. For more information, see Enhanced VPC Routing
@@ -16035,6 +16226,12 @@ func (s *PendingModifiedValues) SetClusterType(v string) *PendingModifiedValues 
 // SetClusterVersion sets the ClusterVersion field's value.
 func (s *PendingModifiedValues) SetClusterVersion(v string) *PendingModifiedValues {
 	s.ClusterVersion = &v
+	return s
+}
+
+// SetEncryptionType sets the EncryptionType field's value.
+func (s *PendingModifiedValues) SetEncryptionType(v string) *PendingModifiedValues {
+	s.EncryptionType = &v
 	return s
 }
 
@@ -16550,6 +16747,110 @@ func (s *ResetClusterParameterGroupInput) SetParameters(v []*Parameter) *ResetCl
 // SetResetAllParameters sets the ResetAllParameters field's value.
 func (s *ResetClusterParameterGroupInput) SetResetAllParameters(v bool) *ResetClusterParameterGroupInput {
 	s.ResetAllParameters = &v
+	return s
+}
+
+type ResizeClusterInput struct {
+	_ struct{} `type:"structure"`
+
+	// A boolean value indicating whether the resize operation is using the classic
+	// resize process. If you don't provide this parameter or set the value to false
+	// the resize type is elastic.
+	Classic *bool `type:"boolean"`
+
+	// The unique identifier for the cluster to resize.
+	//
+	// ClusterIdentifier is a required field
+	ClusterIdentifier *string `type:"string" required:"true"`
+
+	// The new cluster type for the specified cluster.
+	ClusterType *string `type:"string"`
+
+	// The new node type for the nodes you are adding.
+	NodeType *string `type:"string"`
+
+	// The new number of nodes for the cluster.
+	//
+	// NumberOfNodes is a required field
+	NumberOfNodes *int64 `type:"integer" required:"true"`
+}
+
+// String returns the string representation
+func (s ResizeClusterInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ResizeClusterInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ResizeClusterInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ResizeClusterInput"}
+	if s.ClusterIdentifier == nil {
+		invalidParams.Add(request.NewErrParamRequired("ClusterIdentifier"))
+	}
+	if s.NumberOfNodes == nil {
+		invalidParams.Add(request.NewErrParamRequired("NumberOfNodes"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClassic sets the Classic field's value.
+func (s *ResizeClusterInput) SetClassic(v bool) *ResizeClusterInput {
+	s.Classic = &v
+	return s
+}
+
+// SetClusterIdentifier sets the ClusterIdentifier field's value.
+func (s *ResizeClusterInput) SetClusterIdentifier(v string) *ResizeClusterInput {
+	s.ClusterIdentifier = &v
+	return s
+}
+
+// SetClusterType sets the ClusterType field's value.
+func (s *ResizeClusterInput) SetClusterType(v string) *ResizeClusterInput {
+	s.ClusterType = &v
+	return s
+}
+
+// SetNodeType sets the NodeType field's value.
+func (s *ResizeClusterInput) SetNodeType(v string) *ResizeClusterInput {
+	s.NodeType = &v
+	return s
+}
+
+// SetNumberOfNodes sets the NumberOfNodes field's value.
+func (s *ResizeClusterInput) SetNumberOfNodes(v int64) *ResizeClusterInput {
+	s.NumberOfNodes = &v
+	return s
+}
+
+type ResizeClusterOutput struct {
+	_ struct{} `type:"structure"`
+
+	// Describes a cluster.
+	Cluster *Cluster `type:"structure"`
+}
+
+// String returns the string representation
+func (s ResizeClusterOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ResizeClusterOutput) GoString() string {
+	return s.String()
+}
+
+// SetCluster sets the Cluster field's value.
+func (s *ResizeClusterOutput) SetCluster(v *Cluster) *ResizeClusterOutput {
+	s.Cluster = v
 	return s
 }
 
