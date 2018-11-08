@@ -32,13 +32,14 @@ func Provider() *schema.Provider {
 		Schema: map[string]*schema.Schema{
 			"username": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    false,
+				Optional:    true,
 				Default:     "",
 				Description: "Cassandra Username",
+				Sensitive:   true,
 			},
 			"password": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    false,
+				Optional:    true,
 				Default:     "",
 				Description: "Cassandra Password",
 				Sensitive:   true,
