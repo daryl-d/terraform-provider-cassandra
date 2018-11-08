@@ -20,11 +20,11 @@ provider "cassandra" {
 
 #### username
 
-Cassandra client username. Required variable
+Cassandra client username.
 
 #### password
 
-Cassandra client password. Required variable
+Cassandra client password.
 
 #### port
 
@@ -49,6 +49,10 @@ Optional value, it is __false__ by default. Only turned on when connecting to cl
 #### min_tls_version
 
 Default value is __TLS1.2__. It is only applicable when use_ssl is __true__
+
+#### protocol_version
+
+The cql protocol binary version. Defaults to 4
 
 ## Resources
 
