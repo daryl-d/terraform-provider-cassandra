@@ -32,12 +32,15 @@ func Provider() *schema.Provider {
 		Schema: map[string]*schema.Schema{
 			"username": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				Default:     "",
 				Description: "Cassandra Username",
+				Sensitive:   true,
 			},
 			"password": &schema.Schema{
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				Default:     "",
 				Description: "Cassandra Password",
 				Sensitive:   true,
 			},
@@ -112,6 +115,12 @@ func Provider() *schema.Provider {
 					return
 				},
 			},
+			"protocol_version": &schema.Schema{
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     4,
+				Description: "CQL Binary Protocol Version",
+			},
 		},
 	}
 }
@@ -125,6 +134,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	password := d.Get("password").(string)
 	port := d.Get("port").(int)
 	connectionTimeout := d.Get("connection_timeout").(int)
+	protocolVersion := d.Get("protocol_version").(int)
 
 	log.Printf("Using port %d", port)
 	log.Printf("Using use_ssl %v", useSSL)
@@ -158,6 +168,8 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	cluster.CQLVersion = "3.0.0"
 
 	cluster.Keyspace = "system"
+
+	cluster.ProtoVersion = protocolVersion
 
 	cluster.DisableInitialHostLookup = true
 

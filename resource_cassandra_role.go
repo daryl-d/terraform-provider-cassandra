@@ -8,6 +8,7 @@ import (
 
 	"github.com/gocql/gocql"
 	"github.com/hashicorp/terraform/helper/schema"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -158,24 +159,18 @@ func resourceRoleCreateOrUpdate(d *schema.ResourceData, meta interface{}, create
 		return createErr
 	}
 
-	_, _, _, saltedHash, readRoleErr := readRole(session, name)
-
 	d.SetId(name)
 	d.Set("name", name)
 	d.Set("super_user", superUser)
 	d.Set("login", login)
-
-	if readRoleErr != nil {
-		return readRoleErr
-	}
-
-	d.Set("password", saltedHash)
+	d.Set("password", password)
 
 	return nil
 }
 
 func resourceRoleRead(d *schema.ResourceData, meta interface{}) error {
 	name := d.Get("name").(string)
+	password := d.Get("password").(string)
 
 	cluster := meta.(*gocql.ClusterConfig)
 
@@ -198,11 +193,19 @@ func resourceRoleRead(d *schema.ResourceData, meta interface{}) error {
 		return readRoleErr
 	}
 
+	result := bcrypt.CompareHashAndPassword([]byte(saltedHash), []byte(password))
+
 	d.SetId(_name)
 	d.Set("name", _name)
 	d.Set("super_user", superUser)
 	d.Set("login", login)
-	d.Set("password", saltedHash)
+
+	if result == nil {
+		d.Set("password", password)
+	} else {
+		// password has changed between runs
+		d.Set("password", saltedHash)
+	}
 
 	return nil
 }

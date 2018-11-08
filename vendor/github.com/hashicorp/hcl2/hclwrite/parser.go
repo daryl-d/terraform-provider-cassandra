@@ -185,9 +185,7 @@ func parseBody(nativeBody *hclsyntax.Body, from inputTokens) (inputTokens, *node
 
 	body := &Body{
 		inTree: newInTree(),
-
-		indentLevel: 0, // TODO: deal with this
-		items:       newNodeSet(),
+		items:  newNodeSet(),
 	}
 
 	remain := within
@@ -374,6 +372,7 @@ func parseTraversal(nativeTraversal hcl.Traversal, from inputTokens) (before inp
 		before, step, after := parseTraversalStep(nativeStep, stepAfter)
 		children.AppendUnstructuredTokens(before.Tokens())
 		children.AppendNode(step)
+		traversal.steps.Add(step)
 		stepAfter = after
 	}
 

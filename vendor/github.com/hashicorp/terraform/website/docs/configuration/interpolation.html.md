@@ -116,7 +116,7 @@ access, a function call, or even another conditional. The true and false
 value can also be any valid interpolation syntax. The returned types by
 the true and false side must be the same.
 
-The support operators are:
+The supported operators are:
 
   * Equality: `==` and `!=`
   * Numerical comparison: `>`, `<`, `>=`, `<=`
@@ -419,7 +419,7 @@ The supported built-in functions are:
 
   * `urlencode(string)` - Returns an URL-safe copy of the string.
 
-  * `uuid()` - Returns a UUID string in RFC 4122 v4 format. This string will change with every invocation of the function, so in order to prevent diffs on every plan & apply, it must be used with the [`ignore_changes`](/docs/configuration/resources.html#ignore-changes) lifecycle attribute.
+  * `uuid()` - Returns a random UUID string. This string will change with every invocation of the function, so in order to prevent diffs on every plan & apply, it must be used with the [`ignore_changes`](/docs/configuration/resources.html#ignore-changes) lifecycle attribute.
 
   * `values(map)` - Returns a list of the map values, in the order of the keys
     returned by the `keys` function. This function only works on flat maps and

@@ -5,15 +5,13 @@ import (
 	"errors"
 	"log"
 
-	"github.com/hashicorp/terraform/command/clistate"
-	"github.com/hashicorp/terraform/command/format"
-
-	"github.com/hashicorp/terraform/tfdiags"
-
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform/backend"
+	"github.com/hashicorp/terraform/command/clistate"
+	"github.com/hashicorp/terraform/command/format"
 	"github.com/hashicorp/terraform/state"
 	"github.com/hashicorp/terraform/terraform"
+	"github.com/hashicorp/terraform/tfdiags"
 )
 
 // backend.Local implementation.
@@ -57,9 +55,6 @@ func (b *Local) context(op *backend.Operation) (*terraform.Context, state.State,
 	opts.Module = op.Module
 	opts.Targets = op.Targets
 	opts.UIInput = op.UIIn
-	if op.Variables != nil {
-		opts.Variables = op.Variables
-	}
 
 	// Load our state
 	// By the time we get here, the backend creation code in "command" took
