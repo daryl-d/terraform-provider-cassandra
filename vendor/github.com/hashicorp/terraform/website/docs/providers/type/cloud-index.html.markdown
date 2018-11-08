@@ -19,6 +19,8 @@ vendor in close collaboration with HashiCorp, and are tested by HashiCorp.
 
 [Arukas](/docs/providers/arukas/index.html)
 
+[Brightbox](/docs/providers/brightbox/index.html)
+
 [CenturyLinkCloud](/docs/providers/clc/index.html)
 
 [CloudScale.ch](/docs/providers/cloudscale/index.html)
@@ -29,7 +31,15 @@ vendor in close collaboration with HashiCorp, and are tested by HashiCorp.
 
 [Fastly](/docs/providers/fastly/index.html)
 
+[FlexibleEngine](/docs/providers/flexibleengine/index.html)
+
 [Heroku](/docs/providers/heroku/index.html)
+
+[Hetzner Cloud](/docs/providers/hcloud/index.html)
+
+[HuaweiCloud](/docs/providers/huaweicloud/index.html)
+
+[Nutanix](/docs/providers/nutanix/index.html)
 
 [OpenStack](/docs/providers/openstack/index.html)
 
@@ -45,8 +55,10 @@ vendor in close collaboration with HashiCorp, and are tested by HashiCorp.
 
 [SoftLayer](/docs/providers/softlayer/index.html)
 
-[Triton](/docs/providers/triton/index.html)
+[TelefonicaOpenCloud](/docs/providers/telefonicaopencloud/index.html)
 
-[vCloud Director](/docs/providers/vcd/index.html)
+[TencentCloud](/docs/providers/tencentcloud/index.html)
+
+[Triton](/docs/providers/triton/index.html)
 
 [1&1](/docs/providers/oneandone/index.html)

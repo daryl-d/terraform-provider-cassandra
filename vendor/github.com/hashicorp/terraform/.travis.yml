@@ -1,8 +1,10 @@
 dist: trusty
-sudo: false
+sudo: required
+services:
+  - docker
 language: go
 go:
-- "1.10.1"
+- "1.11"
 
 # add TF_CONSUL_TEST=1 to run consul tests
 # they were causing timouts in travis
@@ -35,6 +37,8 @@ script:
 - make test
 - make e2etest
 - GOOS=windows go build
+- make website-test
+
 branches:
   only:
   - master
