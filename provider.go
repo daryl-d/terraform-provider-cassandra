@@ -171,6 +171,8 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 
 	cluster.ProtoVersion = protocolVersion
 
+	cluster.HostFilter = gocql.WhiteListHostFilter(hosts...)
+
 	cluster.DisableInitialHostLookup = true
 
 	if useSSL {
