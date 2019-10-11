@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	allowedTlsProtocols = map[string]uint16{
+	allowedTLSProtocols = map[string]uint16{
 		"SSL3.0": tls.VersionSSL30,
 		"TLS1.0": tls.VersionTLS10,
 		"TLS1.1": tls.VersionTLS11,
@@ -21,6 +21,7 @@ var (
 	}
 )
 
+// Provider returns a terraform.ResourceProvider
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
@@ -106,10 +107,10 @@ func Provider() *schema.Provider {
 				Default:     "TLS1.2",
 				Description: "Minimum TLS Version used to connect to the cluster - allowed values are SSL3.0, TLS1.0, TLS1.1, TLS1.2. Applies only when useSSL is enabled",
 				ValidateFunc: func(i interface{}, s string) (ws []string, errors []error) {
-					minTlsVersion := i.(string)
+					minTLSVersion := i.(string)
 
-					if allowedTlsProtocols[minTlsVersion] == 0 {
-						errors = append(errors, fmt.Errorf("%s: invalid value - must be one of SSL3.0, TLS1.0, TLS1.1, TLS1.2", minTlsVersion))
+					if allowedTLSProtocols[minTLSVersion] == 0 {
+						errors = append(errors, fmt.Errorf("%s: invalid value - must be one of SSL3.0, TLS1.0, TLS1.1, TLS1.2", minTLSVersion))
 					}
 
 					return
@@ -181,7 +182,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 		minTLSVersion := d.Get("min_tls_version").(string)
 
 		tlsConfig := &tls.Config{
-			MinVersion: allowedTlsProtocols[minTLSVersion],
+			MinVersion: allowedTLSProtocols[minTLSVersion],
 		}
 
 		if rootCA != "" {
