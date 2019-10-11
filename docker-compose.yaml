@@ -6,3 +6,5 @@ services:
       - CASSANDRA_CLUSTER_NAME='Cassandra Terrform Provider Test Cluster'
     ports:
       - 9042:9042
+    volumes:
+      - ./cassandra.yaml:/etc/cassandra/cassandra.yaml
