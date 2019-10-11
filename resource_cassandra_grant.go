@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/gocql/gocql"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
 const (
@@ -47,7 +47,7 @@ const (
 	identifier_role_name     = "role_name"
 	identifier_keyspace_name = "keyspace_name"
 	identifier_grantee       = "grantee"
-	identifier_privilege    = "privilege"
+	identifier_privilege     = "privilege"
 	identifier_resource_type = "resource_type"
 )
 
@@ -102,7 +102,7 @@ var (
 )
 
 type Grant struct {
-	Privilege   string
+	Privilege    string
 	ResourceType string
 	Grantee      string
 	Keyspace     string
