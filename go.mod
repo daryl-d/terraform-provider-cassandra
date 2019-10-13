@@ -1,6 +1,6 @@
 module github.com/siteminder-au/terraform-provider-cassandra
 
-go 1.12
+go 1.13
 
 require (
 	github.com/bitly/go-hostpool v0.0.0-20171023180738-a3a6125de932 // indirect
